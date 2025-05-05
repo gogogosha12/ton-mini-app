@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>TON Connect Mini App</title>
+  <script src="https://unpkg.com/@tonconnect/sdk@latest"></script>
+</head>
+<body>
+  <h2>Подключение TON кошелька</h2>
+  <button id="connect">🔗 Подключить кошелёк</button>
+  <p id="address"></p>
+
+  <script>
+    const connector = new TonConnectSDK.TonConnect({
+      manifestUrl: 'https://ton-connect.github.io/demo-dapp-with-react/tonconnect-manifest.json'
+    });
+
+    const connectButton = document.getElementById('connect');
+    const addressField = document.getElementById('address');
+
+    connectButton.onclick = async () => {
+      await connector.connectWallet();
+    };
+
+    connector.onStatusChange(wallet => {
+      if (wallet && wallet.account?.address) {
+        addressField.innerText = `Адрес кошелька: ${wallet.account.address}`;
+      }
+    });
+  </script>
+</body>
+</html>
